@@ -61,10 +61,9 @@ static EventHandlerRef modifiersEvent;
 
 - (IBAction)relaunch {
   NSString *appPath = [[NSBundle mainBundle] bundlePath];
-  int pid = (int)[[NSProcessInfo processInfo] processIdentifier];
-  NSString *script = [NSString stringWithFormat:
-    @"while kill -0 %d 2>/dev/null; do sleep 0.1; done; open \"%@\"", pid, appPath];
-  [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:@[@"-c", script]];
+  NSString *processID = [NSString stringWithFormat:@"%d", [[NSProcessInfo processInfo] processIdentifier]];
+  NSString *script = @"while kill -0 \"$1\" 2>/dev/null; do sleep 0.1; done; /usr/bin/open \"$2\"";
+  [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:@[@"-c", script, @"slate-relaunch", processID, appPath]];
   [NSApp terminate:self];
 }
 

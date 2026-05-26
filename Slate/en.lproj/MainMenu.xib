@@ -2533,15 +2533,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: automaticallyChecksForUpdates</string>
+						<string key="label">value: updater.automaticallyChecksForUpdates</string>
 						<reference key="source" ref="758309769"/>
 						<reference key="destination" ref="757407638"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="758309769"/>
 							<reference key="NSDestination" ref="757407638"/>
-							<string key="NSLabel">value: automaticallyChecksForUpdates</string>
+							<string key="NSLabel">value: updater.automaticallyChecksForUpdates</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">automaticallyChecksForUpdates</string>
+							<string key="NSKeyPath">updater.automaticallyChecksForUpdates</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSConditionallySetsEnabled</string>
 								<boolean value="NO" key="NS.object.0"/>
