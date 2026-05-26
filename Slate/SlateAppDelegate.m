@@ -32,7 +32,7 @@
 #import "SwitchOperation.h"
 #import "RunningApplications.h"
 #import "GridOperation.h"
-#import <Sparkle/SUUpdater.h>
+#import <Sparkle/Sparkle.h>
 
 @implementation SlateAppDelegate
 
@@ -60,15 +60,11 @@ static EventHandlerRef modifiersEvent;
 }
 
 - (IBAction)relaunch {
-  NSString *launcherSource = [[NSBundle bundleForClass:[SUUpdater class]]  pathForResource:@"relaunch" ofType:@""];
-  NSString *launcherTarget = [NSTemporaryDirectory() stringByAppendingPathComponent:[launcherSource lastPathComponent]];
   NSString *appPath = [[NSBundle mainBundle] bundlePath];
-  NSString *processID = [NSString stringWithFormat:@"%d", [[NSProcessInfo processInfo] processIdentifier]];
-
-  [[NSFileManager defaultManager] removeItemAtPath:launcherTarget error:NULL];
-  [[NSFileManager defaultManager] copyItemAtPath:launcherSource toPath:launcherTarget error:NULL];
-
-  [NSTask launchedTaskWithLaunchPath:launcherTarget arguments:[NSArray arrayWithObjects:appPath, processID, nil]];
+  int pid = (int)[[NSProcessInfo processInfo] processIdentifier];
+  NSString *script = [NSString stringWithFormat:
+    @"while kill -0 %d 2>/dev/null; do sleep 0.1; done; open \"%@\"", pid, appPath];
+  [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:@[@"-c", script]];
   [NSApp terminate:self];
 }
 

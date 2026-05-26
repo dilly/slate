@@ -28,7 +28,6 @@
 #import "StringTokenizer.h"
 #import "Snapshot.h"
 #import "SnapshotList.h"
-#import "JSONKit.h"
 #import "SlateLogger.h"
 #import "NSFileManager+ApplicationSupport.h"
 #import "NSString+Indicies.h"
@@ -396,7 +395,7 @@ static SlateConfig *_instance = nil;
   NSString *fileString = [NSString stringWithContentsOfURL:[SlateConfig snapshotsFile] encoding:NSUTF8StringEncoding error:nil];
   if (fileString == nil || [fileString isEqualToString:EMPTY])
     return YES;
-  id iShouldBeADictionary = [fileString objectFromJSONString];
+  id iShouldBeADictionary = [NSJSONSerialization JSONObjectWithData:[fileString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
   if (![iShouldBeADictionary isKindOfClass:[NSDictionary class]]) return NO;
   NSDictionary *snapshotsDict = iShouldBeADictionary;
   [self snapshotsFromDictionary:snapshotsDict];
@@ -492,7 +491,7 @@ static SlateConfig *_instance = nil;
   NSDictionary *snapshotDict = [self snapshotsToDictionary];
 
   // Get NSData from NSDictionary
-  NSData *jsonData = [snapshotDict JSONData];
+  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:snapshotDict options:0 error:nil];
 
   // Save NSData to file
   [jsonData writeToURL:[SlateConfig snapshotsFile] atomically:YES];
